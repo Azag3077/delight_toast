@@ -19,6 +19,8 @@ class DelightToastBar {
   /// Set true to dismiss toast automatically based on snackbarDuration
   final bool autoDismiss;
 
+  final bool swipeToDismiss;
+
   /// Pass the widget inside builder context
   final WidgetBuilder builder;
 
@@ -38,6 +40,7 @@ class DelightToastBar {
       required this.builder,
       this.animationDuration = const Duration(milliseconds: 700),
       this.autoDismiss = false,
+      this.swipeToDismiss = true,
       this.animationCurve})
       : assert(
             snackbarDuration.inMilliseconds > animationDuration.inMilliseconds);
@@ -62,6 +65,7 @@ class DelightToastBar {
         snackbarPosition: position,
         animationCurve: animationCurve,
         autoDismiss: autoDismiss,
+        swipeToDismiss: swipeToDismiss,
         getPosition: () => calculatePosition(_toastBars, this),
         getscaleFactor: () => calculateScaleFactor(_toastBars, this),
         snackbarDuration: snackbarDuration,

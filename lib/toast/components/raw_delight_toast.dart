@@ -8,6 +8,7 @@ class RawDelightToast extends StatefulWidget {
   final Duration snackbarDuration;
   final Curve? animationCurve;
   final bool autoDismiss;
+  final bool swipeToDismiss;
   final DelightSnackbarPosition snackbarPosition;
   final Function() getscaleFactor;
   final Function() getPosition;
@@ -21,6 +22,7 @@ class RawDelightToast extends StatefulWidget {
       required this.snackbarDuration,
       required this.onRemove,
       this.autoDismiss = true,
+      this.swipeToDismiss = true,
       required this.getPosition,
       this.animationCurve,
       required this.getscaleFactor});
@@ -67,6 +69,7 @@ class RawDelightToastState extends State<RawDelightToast> {
       ],
       child: Dismissible(
           key: UniqueKey(),
+          direction: widget.swipeToDismiss ? DismissDirection.horizontal : DismissDirection.none,
           onDismissed: (direction) {
             widget.onRemove();
           },

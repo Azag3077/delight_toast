@@ -52,12 +52,14 @@ class DelightToastBar {
   }
 
   /// Push the snackbar in current context
-  void show(BuildContext context) => _show(Navigator.of(context).overlay!);
+  void show(BuildContext context, [bool useOverlay = false]) {
+    late final OverlayState overlayState;
 
-  /// Push the snackbar overlayState
-  void showWithOverlay(OverlayState overlayState) => _show(overlayState);
-
-  void _show(OverlayState overlayState) {
+    if (useOverlay) {
+      overlayState = Overlay.of(context, rootOverlay: false);
+    } else {
+      overlayState = Navigator.of(context).overlay!;
+    }
     info = SnackBarInfo(
       key: GlobalKey<RawDelightToastState>(),
       createdAt: DateTime.now(),

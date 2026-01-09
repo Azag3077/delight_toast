@@ -5,6 +5,7 @@ import 'package:delightful_toast/toast/components/raw_delight_toast.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:delightful_toast/toast/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 List<DelightToastBar> _toastBars = [];
 
@@ -80,13 +81,20 @@ class DelightToastBar {
       ),
     );
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    final phase = SchedulerBinding.instance.schedulerPhase;
+    if (phase == SchedulerPhase.persistentCallbacks ||
+        phase == SchedulerPhase.transientCallbacks) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _toastBars.add(this);
+        overlayState.insert(info.entry);
+      });
+    } else {
       _toastBars.add(this);
       overlayState.insert(info.entry);
-    });
+    }
   }
 
-  /// Remove all the snackbar in the context
+  /// Remove all the snack-bar in the context
   static void removeAll() {
     for (int i = 0; i < _toastBars.length; i++) {
       _toastBars[i].info.entry.remove();
